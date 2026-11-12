@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Ripple Effect Challenge – Signa Trust</title>
+<style>
+:root{--bg:#fff;--card:#fff;--ink:#2b2233;--mute:#6d6275;--pri:#f7b82b;--pri2:#7a1a2e;--line:#f3e3b8;--ground:#fbe7ad;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1a1410;--card:#261d16;--ink:#fff8e8;--mute:#cdbf9f;--pri:#f7b82b;--pri2:#f08a9b;--line:#4a3a22;--ground:#4a3a22;color-scheme:dark}}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,'Times New Roman',serif;line-height:1.55}
+.w{max-width:960px;margin:0 auto;padding:24px 18px}
+h1{font-size:clamp(2rem,6vw,3.2rem);line-height:1.1;margin:.2em 0}
+.eyebrow{font:600 .8rem system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--pri2)}
+p.lead{font-size:1.15rem;color:var(--mute);max-width:620px}
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center}
+@media(max-width:720px){.hero{grid-template-columns:1fr}}
+.stage{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:16px;text-align:center}
+svg{max-width:100%;height:auto}
+#girl{transform-box:view-box;transform-origin:100px 282px;transition:transform 1.4s cubic-bezier(.3,1.4,.5,1)}
+.ring{fill:none;stroke:var(--pri);stroke-width:2;opacity:0;transform-box:fill-box;transform-origin:center;animation:rip 3.6s infinite}
+.ring:nth-child(2){animation-delay:1.2s}.ring:nth-child(3){animation-delay:2.4s}
+@keyframes rip{0%{transform:scale(.3);opacity:.7}100%{transform:scale(1.6);opacity:0}}
+#cap{transition:opacity .8s}
+.label{font:600 1rem system-ui,sans-serif;margin:6px 0 0}
+.bar{height:16px;background:var(--line);border-radius:99px;overflow:hidden;margin:14px 0 6px}
+#fill{height:100%;width:0;background:linear-gradient(90deg,#f7b82b,#ffd873);border-radius:99px;transition:width 1.4s ease}
+.stats{display:flex;justify-content:space-between;font:600 .95rem system-ui,sans-serif;color:var(--mute)}
+.big{font-size:2.6rem;font-weight:700;color:var(--ink);margin:10px 0 0}
+.miles{display:flex;justify-content:space-between;font:.72rem system-ui,sans-serif;color:var(--mute);margin-top:4px;text-align:center;gap:4px}
+.miles span.on{color:var(--pri2);font-weight:700}
+.btn{display:inline-block;background:var(--pri);color:#2b1a00;text-decoration:none;border:0;border-radius:99px;padding:14px 28px;font:700 1rem system-ui,sans-serif;cursor:pointer}
+.btn.alt{background:transparent;color:var(--ink);border:2px solid var(--line)}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}
+.chip{border:2px solid var(--line);background:var(--card);color:var(--ink);padding:8px 16px;border-radius:99px;font:600 .95rem system-ui,sans-serif;cursor:pointer}
+.chip.sel{border-color:var(--pri);background:var(--pri);color:#2b1a00}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:36px 0}
+@media(max-width:720px){.steps{grid-template-columns:1fr}}
+.step{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px}
+.step b{font:800 .85rem system-ui,sans-serif;letter-spacing:.1em;color:var(--pri2)}
+.step h3{margin:.3em 0}.step p{margin:0;color:var(--mute)}
+.needs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:0 0 30px}@media(max-width:720px){.needs{grid-template-columns:1fr 1fr}}.needs .step h3{font-size:1.05rem}
+.note{font-size:.9rem;color:var(--mute)}
+.demo{margin-top:30px;padding-top:14px;border-top:1px dashed var(--line);font:.8rem system-ui,sans-serif;color:var(--mute)}
+.demo input{width:100%}
+</style></head>
+<body><div class="w">
+<div class="eyebrow">Signa Trust · Signa Opportunity</div>
+<div class="hero">
+<div>
+<h1>The Ripple Effect Challenge</h1>
+<p class="lead">One small contribution can start something bigger. Seven young women are already at university. Every rand donated helps her grow, and helps them pay for books, accommodation, study equipment and tuition fees so they can keep studying into 2027.</p>
+<div class="big" id="amt">R0</div>
+<div class="stats"><span id="pct">0% of goal</span><span id="goal"></span></div>
+<div class="bar"><div id="fill"></div></div>
+<div class="miles" id="miles"></div>
+<div class="row">
+<a class="btn" id="don" href="https://signatrust.co.za/EFT/" target="_blank" rel="noopener">Make a donation</a>
+<button class="btn alt" id="share">Challenge a friend</button>
+</div>
+<div class="row" id="chips"></div>
+<p class="note" id="msg"></p>
+</div>
+<div class="stage">
+<svg viewBox="0 0 200 310" role="img" aria-label="A young woman who grows taller as donations come in">
+<g id="rings"><ellipse class="ring" cx="100" cy="290" rx="90" ry="14"/><ellipse class="ring" cx="100" cy="290" rx="90" ry="14"/><ellipse class="ring" cx="100" cy="290" rx="90" ry="14"/></g>
+<ellipse cx="100" cy="290" rx="70" ry="9" fill="var(--ground)"/>
+<g id="girl">
+<circle cx="100" cy="98" r="39" fill="#2a1a14"/><circle cx="60" cy="78" r="17" fill="#2a1a14"/><circle cx="140" cy="78" r="17" fill="#2a1a14"/><circle cx="60" cy="96" r="5" fill="#f7b82b"/><circle cx="140" cy="96" r="5" fill="#f7b82b"/>
+<rect x="90" y="126" width="20" height="16" rx="6" fill="#8d5a3b"/>
+<path d="M64 236 L78 138 Q100 128 122 138 L136 236 Z" fill="#7a1a2e"/><rect x="80" y="170" width="40" height="6" fill="#f7b82b"/>
+<rect x="78" y="234" width="15" height="46" rx="6" fill="#8d5a3b"/><rect x="107" y="234" width="15" height="46" rx="6" fill="#8d5a3b"/>
+<rect x="72" y="278" width="22" height="8" rx="4" fill="#2b2233"/><rect x="106" y="278" width="22" height="8" rx="4" fill="#2b2233"/>
+<path d="M80 146 Q56 180 66 210" stroke="#8d5a3b" stroke-width="12" fill="none" stroke-linecap="round"/>
+<path d="M120 146 Q144 180 134 210" stroke="#8d5a3b" stroke-width="12" fill="none" stroke-linecap="round"/>
+<circle cx="100" cy="98" r="31" fill="#8d5a3b"/><circle cx="81" cy="108" r="5" fill="#d9795c" opacity=".6"/><circle cx="119" cy="108" r="5" fill="#d9795c" opacity=".6"/>
+<circle cx="88" cy="97" r="4" fill="#2a1a14"/><circle cx="112" cy="97" r="4" fill="#2a1a14"/>
+<path d="M91 109 Q100 117 109 109" stroke="#2a1a14" stroke-width="3" fill="none" stroke-linecap="round"/>
+<g id="cap" opacity="0"><polygon points="56,72 100,54 144,72 100,90" fill="#2b2233"/><rect x="82" y="80" width="36" height="12" fill="#2b2233"/><line x1="140" y1="73" x2="144" y2="100" stroke="#f7b82b" stroke-width="3"/><circle cx="144" cy="102" r="4" fill="#f7b82b"/></g>
+</g></svg>
+<p class="label" id="stage"></p>
+</div></div>
+
+<div class="steps">
+<div class="step"><b>1 · GIVE</b><h3>Donate what you can</h3><p>Once-off: R50, R100, R250, R500, R1,000 or any amount you’re comfortable with.</p></div>
+<div class="step"><b>2 · CHALLENGE</b><h3>Invite someone</h3><p>Ask a colleague, friend or family member to match your gift or give what they can.</p></div>
+<div class="step"><b>3 · MULTIPLY</b><h3>Watch her grow</h3><p>Every contribution adds to the support that helps these students continue their education.</p></div>
+</div>
+<h2>Where your donation goes</h2>
+<div class="needs"><div class="step"><h3>📚 Book allowance</h3><p>Textbooks and course materials.</p></div><div class="step"><h3>💻 Study equipment</h3><p>The tools needed to learn and complete assignments.</p></div><div class="step"><h3>🏠 Accommodation</h3><p>A safe place to live and study near campus.</p></div><div class="step"><h3>🎓 Tuition fees</h3><p>Keeping each student enrolled until she graduates.</p></div></div>
+<p class="note">Participation is entirely voluntary, and there is no expectation to contribute a particular amount. We are grateful for any contribution.</p>
+
+<div class="demo">Preview mode: drag to see her grow (the real total comes from RAISED in the page settings).
+<input type="range" id="demo" min="0" max="100" value="0"></div>
+</div>
+<script>
+// ===== SETTINGS: update RAISED as donations come in, then republish =====
+var RAISED = 150, GOAL = 15000;
+var STAGES=["Book allowance","Study equipment","Accommodation","Tuition fees","Graduate!"];
+var f=function(n){return "R"+Math.round(n).toLocaleString("en-ZA")};
+var $=function(i){return document.getElementById(i)};
+$("goal").textContent="Goal "+f(GOAL);
+$("miles").innerHTML=STAGES.map(function(s,i){return "<span id='m"+i+"'>"+s+"</span>"}).join("");
+function render(v){
+  var p=Math.min(100,v/GOAL*100), s=0.4+0.6*p/100, k=Math.min(4,Math.floor(p/25));
+  $("girl").style.transform="scale("+s+")";
+  $("cap").setAttribute("opacity",p>=100?1:0);
+  $("fill").style.width=p+"%";
+  $("amt").textContent=f(v);
+  $("pct").textContent=Math.round(p)+"% of goal";
+  $("stage").textContent=STAGES[k];
+  STAGES.forEach(function(_,i){$("m"+i).className=i<=k?"on":""});
+}
+setTimeout(function(){render(RAISED)},300);
+var amts=[50,100,250,500,1000];
+amts.forEach(function(a){var b=document.createElement("button");b.className="chip";b.textContent=f(a);
+  b.onclick=function(){document.querySelectorAll(".chip").forEach(function(c){c.classList.remove("sel")});b.classList.add("sel");
+  $("msg").textContent="Great choice! Use the donation button to give "+f(a)+" by EFT, then challenge someone to match it."};
+  $("chips").appendChild(b)});
+$("share").onclick=function(){
+  var t="I joined The Ripple Effect Challenge to support young women at Signa Trust. Give, challenge someone, multiply the impact! "+location.href;
+  try{if(navigator.share){navigator.share({title:"The Ripple Effect Challenge",text:t});return}}catch(e){}
+  window.open("https://wa.me/?text="+encodeURIComponent(t),"_blank");
+};
+$("demo").oninput=function(){render(this.value/100*GOAL)};
+</script></body></html>
